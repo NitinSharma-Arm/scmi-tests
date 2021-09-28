@@ -11,6 +11,7 @@ Table of Contents:
 - [Clock Management Protocol Tests](#clock-management-protocol-tests)
 - [Sensor Management Protocol Tests](#sensor-management-protocol-tests)
 - [Reset Management Protocol Tests](#reset-management-protocol-tests)
+- [Voltage Management Protocol Tests](#voltage-management-protocol-tests)
 
 Introduction
 -------
