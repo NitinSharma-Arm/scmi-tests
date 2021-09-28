@@ -187,6 +187,14 @@ This section outlines the test specification for SCMI Sensor Management Protocol
 | test_m013  | Read sensor data in sync mode. | Check SUCCESS status is returned. | SENSOR\_READING\_GET |
 | test_m014  | Pre-Condition: Sensor should support async read.<br /> Read sensor data in async mode. | 1. Check SUCCESS status is returned. <br /> 2. Wait for delayed response | SENSOR\_READING\_GET |
 | test_m015  | Read sensor data in async mode for unsupported sensors. | Check NOT\_SUPPORTED status is returned. | SENSOR\_READING\_GET |
+| test_m016  | Discover the sensor axis properties. | Verify SUCCESS is returned and Check sensor axis data returned for supported sensor. | SENSOR\_AXIS\_DESCRIPTION\_GET |
+| test_m017  | Discover sensor axis for non-existent sensor. | Verify NOT_FOUND is returned. | SENSOR\_AXIS\_DESCRIPTION\_GET |
+| test_m018  | 1. Get update intervals supported by sensor.<br /> 2.Get invalid update interval array values for supported sensor. | 1. Verify SUCCESS is returned and interval data is sent.<br /> 2.Verify OUT_OF_INDEX is returned | SENSOR\_LIST\_UPDATE\_INTERVALS |
+| test_m019  | Get update intervals for non-existent sensor. | Verify NOT_FOUND is returned. | SENSOR\_LIST\_UPDATE\_INTERVALS |
+| test_m020  | Read sensor configuration information.| Verify SUCCESS is returned and read sensor configuration data. | SENSOR\_CONFIG\_GET |
+| test_m021  | Read sensor configuration for non-existent sensor. | NOT\_FOUND is returned in response. | SENSOR\_CONFIG\_GET |
+| test_m022  | Set up sensor configuration. | SUCCESS response is returned after applying configurations. | SENSOR\_CONFIG\_SET |
+| test_m023  | Set up configurations for an invalid sensor. | NOT\_FOUND is returned in response. | SENSOR\_CONFIG\_SET |
 
 Reset Management Protocol Tests
 ---------
