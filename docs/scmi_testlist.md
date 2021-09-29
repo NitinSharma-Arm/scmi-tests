@@ -214,6 +214,28 @@ This section outlines the test specification for SCMI Reset Management Protocol.
 | test_r010  | Pre-Condition: RESET\_PROTOCOL\_NOTIFY support.<br /> Query reset protocol notify with invalid domain id. |  Check NOT\_FOUND status is returned.  | RESET\_PROTOCOL\_NOTIFY |
 | test_r011  | Pre-Condition: RESET\_PROTOCOL\_NOTIFY support.<br /> Query reset protocol notify with invalid notify enable. |  Check INVALID\_PARAMETERS status is returned.  | RESET\_PROTOCOL\_NOTIFY |
 
+Voltage Management Protocol Tests
+---------
+This section outlines the test specification for SCMI Voltage Management Protocol.
+
+| Test ID    | Test Intent           | Verification Step  | Comments/Commands Used  |
+| ---------- | --------------------- | ------------------ | ----------------------- |
+| test\_v001 | Query the protocol version information. | Check Version against expected value. | PROTOCOL\_VERSION |
+| test\_v002 | Query the protocol attributes. | Check num of voltage domains against expected value. | PROTOCOL\_ATTRIBUTES |
+| test\_v003 | Query for mandatory command availability. | Check command implementation status. | PROTOCOL\_MESSAGE\_ATTRIBUTES |
+| test\_v004 | 1. Send invalid command id for voltage protocol.<br />2. Query the protocol message attributes with invalid msg\_id. | Check NOT\_FOUND status is returned. | PROTOCOL\_MESSAGE\_ATTRIBUTES |
+| test\_v005 | Query Voltage domain attributes. | Check attributes values against expected values. | VOLTAGE\_DOMAIN\_ATTRIBUTES
+| test\_v006 | Query voltage domain attributes with invalid domain id. | Check NOT\_FOUND status is returned. | VOLTAGE\_DOMAIN\_ATTRIBUTES
+| test\_v007 | 1. Query Voltage describe level for valid domains and valid index.<br />2.Query Voltage describe level for valid domains but invalid index | 1. Check SUCCESS status is returned.<br />2. Check OUT\_OF\_RANGE status is returned. | VOLTAGE\_DESCRIBE\_LEVELS	
+| test\_v008 | Query Voltage describe levels for non valid voltage domain IDs. | Check NOT\_FOUND status is returned. | VOLTAGE\_DESCRIBE\_LEVELS
+| test\_v009 | 1. Set Architectural Operating mode of voltage domains<br />2. Set IMPLEMENTATION defined Operating mode of voltage domains | 1. Check SUCCESS status is returned<br />2. Check SUCCESS status is returned | VOLTAGE\_CONFIG\_SET
+| test\_v010 | Set operating mode for invalid voltage domain | Check NOT\_FOUND status is returned | VOLTAGE\_CONFIG\_SET
+| test\_v011 | 1. Get Operating mode for valid voltage domain<br />2. Get operating mode for invalid voltage domain | 1. Check SUCCESS status returned<br />2. Check NOT\_FOUND status returned | VOLTAGE\_CONFIG\_GET
+| test\_v012 | Set Voltage level of valid voltage domain | Check SUCCESS status is returned | VOLTAGE\_LEVEL\_SET
+| test\_v013 | Set Voltage level of an invalid voltage domain | Check NOT\_FOUND status is returned | VOLTAGE\_LEVEL\_SET
+| test\_v014 | Set Invalid voltage level to voltage domain | Check INVALID\_PARAMETERS status is returned | VOLTAGE\_LEVEL\_SET
+| test\_v015 | Get Voltage level for valid domain | Check SUCCESS is returned | VOLTAGE\_LEVEL\_GET
+| test\_v016 | Get Voltage level for invalid domain | Check NOT\_FOUND is returned | VOLTAGE\_LEVEL\_GET
 - - - - - - - - - - - - - - - - - - - -
 
 _Copyright (c) 2019-2020, Arm Limited and Contributors. All rights reserved._
