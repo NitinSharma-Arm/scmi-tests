@@ -53,7 +53,7 @@ void arm_scmi_agent_execute(void *agent_info)
 
 #ifdef PERFORMANCE_PROTOCOL
     val_print(VAL_PRINT_ERR, "\n\n          *** Starting PERFORMANCE tests ***  ");
-    #val_performance_execute_tests();
+    //val_performance_execute_tests();
 #endif
 
  #ifdef CLOCK_PROTOCOL
