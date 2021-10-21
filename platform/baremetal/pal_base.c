@@ -82,7 +82,7 @@ uint32_t pal_base_get_expected_num_agents(void)
 **/
 uint32_t pal_base_get_expected_num_protocols(void)
 {
-    return g_base_info->num_protocols_implemented;
+    return g_base_info->num_protocols_implemented +1;
 }
 
 /**
