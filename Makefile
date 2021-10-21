@@ -1,5 +1,5 @@
 #/** @file
-# * Copyright (c) 2019, Arm Limited or its affiliates. All rights reserved.
+# * Copyright (c) 2019-2021 Arm Limited or its affiliates. All rights reserved.
 # * SPDX-License-Identifier : Apache-2.0
 # *
 # * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,9 @@ PROGRAM=scmi_test_agent
 BAREMETAL=baremetal
 MOCKER=mocker
 LINUX=linux
+SGM776=sgm776
+TC=tc
+COMMON=common
 
 #Set PLATFORM
 ifneq ($(PLAT),)
@@ -40,7 +43,15 @@ LIB_ALL=$(LIB)
 endif
 
 ifeq ($(PLAT),$(LINUX))
-PLAT_DIR=platform/sgm776
+  DIR=platform/$(LINUX)
+  ifeq ($(TARGET),$(SGM776))
+       PLAT_DIR=$(DIR)/$(SGM776) $(DIR)/$(COMMON)
+  else ifeq ($(TARGET),$(TC))
+       PLAT_DIR=$(DIR)/$(TC) $(DIR)/$(COMMON)
+  else
+       $(error TARGET $(TARGET) is invalid. Provide valid TARGET value (sgm776 or tc) as TARGET=tc or TARGET=sgm776)
+  endif
+  TARGET_UPPER=$(shell echo $(TARGET) | tr '[:lower:]' '[:upper:]')
 endif
 
 # Set VERBOSE to default(TEST) if not set
@@ -80,7 +91,7 @@ export VAL_OBJ_DIR=$(TOP)/val_output
 
 # list of names to be converted as macros
 export D_NAMES=$(ALL_PROTOCOLS_UPPER:%=-D%_PROTOCOL)
-export CFLAGS+=-DVERBOSE_LEVEL=$(VERBOSE)  -Wall -Werror
+export CFLAGS+=-DVERBOSE_LEVEL=$(VERBOSE)  -Wall -Werror -DTARGET_$(TARGET_UPPER)
 
 # Location of external library directories
 LIB_DIR=$(TOP)

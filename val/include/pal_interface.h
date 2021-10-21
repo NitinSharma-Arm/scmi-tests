@@ -109,4 +109,9 @@ uint32_t pal_reset_get_expected_num_domains(void);
 uint8_t *pal_reset_get_expected_name(uint32_t domain_id);
 #endif
 
+#ifdef VOLTAGE_PROTOCOL
+uint32_t pal_voltage_get_expected_num_domains(void);
+uint8_t *pal_voltage_get_expected_name(uint32_t domain_id);
+#endif
+
 #endif

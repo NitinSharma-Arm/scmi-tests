@@ -24,6 +24,7 @@
 
 #define PROTOCOL_VERSION_1 0x00010000
 #define PROTOCOL_VERSION_2 0x00020000
+#define PROTOCOL_VERSION_3 0x00030000
 
 #define SCMI_BASE_TEST_NUM_BASE         100
 #define SCMI_POWER_DOMAIN_TEST_NUM_BASE 200
@@ -32,6 +33,7 @@
 #define SCMI_CLOCK_TEST_NUM_BASE        500
 #define SCMI_SENSOR_TEST_NUM_BASE       600
 #define SCMI_RESET_TEST_NUM_BASE        700
+#define SCMI_VOLTAGE_TEST_NUM_BASE      800
 
 /* set PRINT_LEVEL to one of the below values in your application entry
   to control the verbosity of the prints */
@@ -374,5 +376,37 @@ typedef enum {
 void val_reset_save_info(uint32_t param_identifier, uint32_t domain_id, uint32_t param_value);
 uint32_t val_reset_get_info(uint32_t param_identifier, uint32_t domain_id);
 uint32_t val_reset_execute_tests(void);
+
+/* VOLTAGE VAL APIs */
+
+typedef enum {
+    VOLTAGE_PROTOCOL_VERSION = 0x0,
+    VOLTAGE_PROTOCOL_ATTRIBUTES,
+    VOLTAGE_PROTOCOL_MESSAGE_ATTRIBUTES,
+    VOLTAGE_DOMAIN_ATTRIBUTES,
+    VOLTAGE_DESCRIBE_LEVELS,
+    VOLTAGE_CONFIG_SET,
+    VOLTAGE_CONFIG_GET,
+    VOLTAGE_LEVEL_SET,
+    VOLTAGE_LEVEL_GET,
+    VOLTAGE_INVALID_COMMAND
+} VOLTAGE_COMMANDS;
+
+typedef enum {
+    NUM_VOLTAGE_DOMAINS,
+    VOLTAGE_DOMAIN_CONFIG,
+    VOLTAGE_LEVEL_FORMAT,
+    VOLTAGE_LEVEL_START,
+    VOLTAGE_LEVEL_END,
+    VOLTAGE_STEP_SIZE,
+    OPERATIONAL_VOLTAGE
+} VOLTAGE_INFO;
+
+uint32_t val_voltage_execute_tests(void);
+void val_voltage_save_info(uint32_t param_identifier, uint32_t domain_id, uint32_t param_value);
+void val_voltage_save_level(uint32_t domain_id, uint32_t level_index, uint32_t voltage);
+uint32_t val_voltage_get_level(uint32_t domain_id, uint32_t level_index);
+uint32_t val_voltage_get_info(uint32_t param_identifier, uint32_t domain_id);
+uint32_t val_voltage_operating_mode_create(uint32_t mode_type, uint32_t mode_id);
 
 #endif

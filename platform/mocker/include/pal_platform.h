@@ -29,6 +29,7 @@
 #define CLOCK_PROTOCOL_ID             0x14
 #define SENSOR_PROTOCOL_ID            0x15
 #define RESET_PROTOCOL_ID             0x16
+#define VOLTAGE_PROTOCOL_ID           0x17
 
 enum BITS_HEADER {
     RESERVED_LOW =      28,
@@ -84,11 +85,17 @@ void reset_send_message(uint32_t message_id, uint32_t parameter_count,
         const uint32_t *parameters, int32_t *status,
         size_t *return_values_count, uint32_t *return_values);
 
+void voltage_send_message(uint32_t message_id, uint32_t parameter_count,
+        const uint32_t *parameters, int32_t *status,
+        size_t *return_values_count, uint32_t *return_values);
+
+
 void fill_base_protocol(void);
 void fill_power_protocol(void);
 void fill_clock_protocol(void);
 void fill_sensor_protocol(void);
 void fill_performance_protocol(void);
 void fill_reset_protocol(void);
+void fill_voltage_protocol(void);
 
 #endif /*__PAL_PLATFORM__*/

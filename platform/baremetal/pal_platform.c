@@ -37,6 +37,9 @@ extern void pal_performance_set_expected(const void *);
 #ifdef RESET_PROTOCOL
 extern void pal_reset_set_expected(const void *);
 #endif
+#ifdef VOLTAGE_PROTOCOL
+extern void pal_voltage_set_expected(const void *);
+#endif
 
 /**
   @brief   This API is used to call platform function to send command
@@ -136,6 +139,12 @@ uint32_t pal_initialize_system(void *info)
 #ifdef RESET_PROTOCOL
          case 0x16:
              pal_reset_set_expected(protocol_info->expected_return_values);
+             break;
+#endif
+#ifdef VOLTAGE_PROTOCOL
+         case 0x17:
+             // TODO : pal_voltage_set_expected(protocol_info->expected_return_values);
+             // PAL voltage interface for sgm 775 not ready in scp-tools-nonpublic yet.
              break;
 #endif
          }

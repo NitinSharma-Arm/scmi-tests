@@ -61,6 +61,10 @@ void pal_send_message(uint32_t message_header_send, size_t parameter_count,
         reset_send_message(message_id, parameter_count, parameters, status,
                 return_values_count, return_values);
         break;
+    case VOLTAGE_PROTOCOL_ID:
+        voltage_send_message(message_id, parameter_count, parameters, status,
+                return_values_count, return_values);
+        break;
     default:
         printf("\nProtocol: %d\n", message_id);
         assert(!"\nUnknown protocol id\n");
@@ -88,6 +92,7 @@ uint32_t pal_initialize_system(void *info)
     fill_sensor_protocol();
     fill_clock_protocol();
     fill_reset_protocol();
+    fill_voltage_protocol();
 
     return PAL_STATUS_PASS;
 }

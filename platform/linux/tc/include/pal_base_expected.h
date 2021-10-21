@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,24 +20,23 @@
 
 #include <pal_platform.h>
 
-static uint8_t supported_protocols[] = {
-    POWER_DOMAIN_PROTOCOL_ID,
-    SYSTEM_POWER_PROTOCOL_ID,
-    PERFORMANCE_PROTOCOL_ID,
-    CLOCK_PROTOCOL_ID,
-    SENSOR_PROTOCOL_ID,
-    RESET_PROTOCOL_ID,
-    VOLTAGE_PROTOCOL_ID,
-};
+#define UNTRUSTED 0
 
-/* Expected BASE parameters */
+static uint32_t supported_protocols[] = {
+    BASE_PROTOCOL_ID,
+    PWR_DOMAIN_PROTOCOL_ID,
+    PERFORMANCE_PROTOCOL_ID,
+    CLOCK_PROTOCOL_ID
+};
 
 static char *agents[] = {
     "OSPM", "PSCI"
 };
 
-static char *vendor_name = "mocker";
-static char *subvendor_name = "mocker";
-static uint32_t implementation_version = 1;
+/* Expected BASE parameters */
+
+static char *vendor_name = "arm";
+static char *subvendor_name = "arm";
+static uint32_t implementation_version = VERSION_ENCODE32(2, 8, 0);
 
 #endif /* __PAL_BASE_EXPECTED_H__ */

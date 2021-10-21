@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -85,7 +85,7 @@ uint32_t pal_check_trusted_agent(uint32_t agent_id)
 **/
 uint32_t pal_agent_get_accessible_device(uint32_t agent_id)
 {
-    return sgm_agent_get_accessible_device(agent_id);
+    return linux_agent_get_accessible_device(agent_id);
 }
 
 /**
@@ -95,7 +95,7 @@ uint32_t pal_agent_get_accessible_device(uint32_t agent_id)
 **/
 uint32_t pal_agent_get_inaccessible_device(uint32_t agent_id)
 {
-    return sgm_agent_get_inaccessible_device(agent_id);
+    return linux_agent_get_inaccessible_device(agent_id);
 }
 
 /**
@@ -105,5 +105,5 @@ uint32_t pal_agent_get_inaccessible_device(uint32_t agent_id)
 **/
 uint32_t pal_device_get_accessible_protocol(uint32_t device_id)
 {
-    return sgm_device_get_accessible_protocol(device_id);
+    return linux_device_get_accessible_protocol(device_id);
 }

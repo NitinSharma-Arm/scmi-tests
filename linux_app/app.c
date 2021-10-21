@@ -71,6 +71,11 @@ int main(int argc, char *argv[])
     val_reset_execute_tests();
 #endif
 
+#ifdef VOLTAGE_PROTOCOL
+    val_print(VAL_PRINT_ERR, "\n\n          *** Starting VOLTAGE tests ***  ");
+    val_voltage_execute_tests();
+#endif
+
     num_pass = val_get_test_passed();
     num_fail = val_get_test_failed();
     num_skip = val_get_test_skipped();

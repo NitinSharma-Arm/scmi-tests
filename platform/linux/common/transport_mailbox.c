@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2019-2021 Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +30,19 @@
 /* mailbox transport macros and libraries */
 #define MAX_MEMORY_LENGTH 128
 #define REV(x) ((x << 24) | ((x & 0xff00) << 8) | ((x >> 8) & 0xff00) | (x >> 24))
-#define MB_SIGNAL_FILE "/sys/kernel/debug/mailbox/signal"
-#define MB_MESSAGE_FILE "/sys/kernel/debug/mailbox/message"
 
 #define NO_ERROR 0
 #define ERROR 5
+
+#ifdef TARGET_TC
+    #define MB_SIGNAL_FILE "/sys/kernel/debug/6000000.mailbox-test/signal"
+    #define MB_MESSAGE_FILE "/sys/kernel/debug/6000000.mailbox-test/message"
+#endif
+
+#ifdef TARGET_SGM776
+    #define MB_SIGNAL_FILE "/sys/kernel/debug/mailbox/signal"
+    #define MB_MESSAGE_FILE "/sys/kernel/debug/mailbox/message"
+#endif
 
 /* mailbox memory byte offset mapping */
 enum {
@@ -66,7 +74,7 @@ enum {
  * Mailbox Memory in the SCMI specification.
  *
  */
-int32_t sgm_send_message(uint32_t message_header_send, size_t parameter_count,
+int32_t linux_send_message(uint32_t message_header_send, size_t parameter_count,
         const uint32_t *parameters, uint32_t *message_header_rcv, int32_t *status,
         size_t *return_values_count, uint32_t *return_values)
 {
@@ -181,7 +189,7 @@ int32_t sgm_send_message(uint32_t message_header_send, size_t parameter_count,
  * @brief Interface function that waits for
  * delayed response.
  */
-int sgm_wait_for_response(uint32_t *message_header_rcv,
+int linux_wait_for_response(uint32_t *message_header_rcv,
         int32_t *status, size_t *return_values_count, uint32_t *return_values,
         bool *message_ready, uint32_t timeout)
 {
@@ -267,7 +275,7 @@ int sgm_wait_for_response(uint32_t *message_header_rcv,
  * @brief Interface function that waits for
  * notification.
  */
-int sgm_wait_for_notification(uint32_t *message_header_rcv,
+int linux_wait_for_notification(uint32_t *message_header_rcv,
         size_t *return_values_count, uint32_t *return_values,
         uint32_t timeout)
 {
@@ -347,7 +355,7 @@ int sgm_wait_for_notification(uint32_t *message_header_rcv,
 /*!
  * @brief Interface function that gets accessible device for given agent
  */
-uint32_t sgm_agent_get_accessible_device(uint32_t agent_id)
+uint32_t linux_agent_get_accessible_device(uint32_t agent_id)
 {
     return NO_ERROR;
 }
@@ -355,7 +363,7 @@ uint32_t sgm_agent_get_accessible_device(uint32_t agent_id)
 /*!
  * @brief Interface function that gets inaccessible device for given agent
  */
-uint32_t sgm_agent_get_inaccessible_device(uint32_t agent_id)
+uint32_t linux_agent_get_inaccessible_device(uint32_t agent_id)
 {
     return NO_ERROR;
 }
@@ -363,7 +371,7 @@ uint32_t sgm_agent_get_inaccessible_device(uint32_t agent_id)
 /*!
  * @brief Interface function that gets protocol which can access given device
  */
-uint32_t sgm_device_get_accessible_protocol(uint32_t device_id)
+uint32_t linux_device_get_accessible_protocol(uint32_t device_id)
 {
     return NO_ERROR;
 }

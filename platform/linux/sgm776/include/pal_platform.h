@@ -34,24 +34,25 @@
 #define CLOCK_PROTOCOL_ID             0x14
 #define SENSOR_PROTOCOL_ID            0x15
 #define RESET_PROTOCOL_ID             0x16
+#define VOLTAGE_PROTOCOL_ID           0x17
 #define APCORE_PROTOCOL_ID            0x09
 
 #define TIMEOUT  100
 
-int32_t sgm_send_message(uint32_t message_header_send, size_t parameter_count,
+int32_t linux_send_message(uint32_t message_header_send, size_t parameter_count,
         const uint32_t *parameters, uint32_t *message_header_rcv, int32_t *status,
         size_t *return_values_count, uint32_t *return_values);
 
-int sgm_wait_for_notification(uint32_t *message_header_rcv,
+int linux_wait_for_notification(uint32_t *message_header_rcv,
         size_t *return_values_count, uint32_t *return_values,
         uint32_t timeout);
 
-int sgm_wait_for_response(uint32_t *message_header_rcv,
+int linux_wait_for_response(uint32_t *message_header_rcv,
         int32_t *status, size_t *return_values_count, uint32_t *return_values,
         bool *message_ready, uint32_t timeout);
 
-uint32_t sgm_agent_get_accessible_device(uint32_t agent_id);
-uint32_t sgm_agent_get_inaccessible_device(uint32_t agent_id);
-uint32_t sgm_device_get_accessible_protocol(uint32_t device_id);
+uint32_t linux_agent_get_accessible_device(uint32_t agent_id);
+uint32_t linux_agent_get_inaccessible_device(uint32_t agent_id);
+uint32_t linux_device_get_accessible_protocol(uint32_t device_id);
 
 #endif

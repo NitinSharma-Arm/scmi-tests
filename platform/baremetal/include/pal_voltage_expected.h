@@ -15,29 +15,12 @@
  * limitations under the License.
 **/
 
-#ifndef __PAL_BASE_EXPECTED_H__
-#define __PAL_BASE_EXPECTED_H__
+#ifndef __PAL_VOLTAGE_EXPECTED_H__
+#define __PAL_VOLTAGE_EXPECTED_H__
 
-#include <pal_platform.h>
-
-static uint8_t supported_protocols[] = {
-    POWER_DOMAIN_PROTOCOL_ID,
-    SYSTEM_POWER_PROTOCOL_ID,
-    PERFORMANCE_PROTOCOL_ID,
-    CLOCK_PROTOCOL_ID,
-    SENSOR_PROTOCOL_ID,
-    RESET_PROTOCOL_ID,
-    VOLTAGE_PROTOCOL_ID,
+struct arm_scmi_voltage_expected {
+  // PAL voltage interface for sgm 775 not ready in scp-tools-nonpublic yet.
+  int val;
 };
 
-/* Expected BASE parameters */
-
-static char *agents[] = {
-    "OSPM", "PSCI"
-};
-
-static char *vendor_name = "mocker";
-static char *subvendor_name = "mocker";
-static uint32_t implementation_version = 1;
-
-#endif /* __PAL_BASE_EXPECTED_H__ */
+#endif /* __PAL_VOLTAGE_EXPECTED_H__ */
