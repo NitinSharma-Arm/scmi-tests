@@ -34,12 +34,12 @@
 #define NO_ERROR 0
 #define ERROR 5
 
-#ifdef TARGET_TC
+#ifdef HARDWARE_TC0
     #define MB_SIGNAL_FILE "/sys/kernel/debug/6000000.mailbox-test/signal"
     #define MB_MESSAGE_FILE "/sys/kernel/debug/6000000.mailbox-test/message"
 #endif
 
-#ifdef TARGET_SGM776
+#ifdef HARDWARE_SGM776
     #define MB_SIGNAL_FILE "/sys/kernel/debug/mailbox/signal"
     #define MB_MESSAGE_FILE "/sys/kernel/debug/mailbox/message"
 #endif

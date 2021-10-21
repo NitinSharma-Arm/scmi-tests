@@ -25,7 +25,7 @@ BAREMETAL=baremetal
 MOCKER=mocker
 LINUX=linux
 SGM776=sgm776
-TC=tc
+TC0=tc0
 COMMON=common
 
 #Set PLATFORM
@@ -44,14 +44,14 @@ endif
 
 ifeq ($(PLAT),$(LINUX))
   DIR=platform/$(LINUX)
-  ifeq ($(TARGET),$(SGM776))
+  ifeq ($(HARDWARE),$(SGM776))
        PLAT_DIR=$(DIR)/$(SGM776) $(DIR)/$(COMMON)
-  else ifeq ($(TARGET),$(TC))
-       PLAT_DIR=$(DIR)/$(TC) $(DIR)/$(COMMON)
+  else ifeq ($(HARDWARE),$(TC0))
+       PLAT_DIR=$(DIR)/$(TC0) $(DIR)/$(COMMON)
   else
-       $(error TARGET $(TARGET) is invalid. Provide valid TARGET value (sgm776 or tc) as TARGET=tc or TARGET=sgm776)
+       $(error HARDWARE $(HARDWARE) is invalid. Provide valid HARDWARE value (sgm776 or tc0) as HARDWARE=tc0 or HARDWARE=sgm776)
   endif
-  TARGET_UPPER=$(shell echo $(TARGET) | tr '[:lower:]' '[:upper:]')
+  HARDWARE_UPPER=$(shell echo $(HARDWARE) | tr '[:lower:]' '[:upper:]')
 endif
 
 # Set VERBOSE to default(TEST) if not set
@@ -91,7 +91,7 @@ export VAL_OBJ_DIR=$(TOP)/val_output
 
 # list of names to be converted as macros
 export D_NAMES=$(ALL_PROTOCOLS_UPPER:%=-D%_PROTOCOL)
-export CFLAGS+=-DVERBOSE_LEVEL=$(VERBOSE)  -Wall -Werror -DTARGET_$(TARGET_UPPER)
+export CFLAGS+=-DVERBOSE_LEVEL=$(VERBOSE)  -Wall -Werror -DHARDWARE_$(HARDWARE_UPPER)
 
 # Location of external library directories
 LIB_DIR=$(TOP)
