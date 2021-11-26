@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,14 @@
 **/
 
 #include "val_interface.h"
-#include "val_base.h"
+#include "val_reset.h"
 
-#define TEST_NUM  (SCMI_VOLTAGE_TEST_NUM_BASE + 1)
-#define TEST_DESC "Voltage protocol version check                  "
+#define TEST_NUM  (SCMI_RESET_TEST_NUM_BASE + 1)
+#define TEST_DESC "Reset protocol version check                 "
+
 #define RETURN_VALUE_COUNT 1
 
-uint32_t voltage_query_protocol_version(uint32_t *version)
+uint32_t reset_query_protocol_version_scmi_v3 (void)
 {
     int32_t  status;
     uint32_t rsp_msg_hdr;
@@ -31,16 +32,16 @@ uint32_t voltage_query_protocol_version(uint32_t *version)
     size_t   return_value_count;
     uint32_t return_values[MAX_RETURNS_SIZE];
     uint32_t *parameters;
+    uint32_t version;
 
     if (val_test_initialize(TEST_NUM, TEST_DESC) != VAL_STATUS_PASS)
         return VAL_STATUS_SKIP;
 
-    /* Query the implemented protocol version of voltage protocol */
     val_print(VAL_PRINT_TEST, "\n     [Check 1] Query protocol version");
 
     VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);
     parameters = NULL; /* No parameters for this command */
-    cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_PROTOCOL_VERSION, COMMAND_MSG);
+    cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_RESET, RESET_PROTOCOL_VERSION, COMMAND_MSG);
     val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,
                      &return_value_count, return_values);
 
@@ -52,11 +53,12 @@ uint32_t voltage_query_protocol_version(uint32_t *version)
 
     val_print_return_values(return_value_count, return_values);
 
-    if (return_value_count != RETURN_VALUE_COUNT)
+    if (val_compare_return_count(return_value_count, RETURN_VALUE_COUNT))
         return VAL_STATUS_FAIL;
 
-    *version = return_values[VERSION_OFFSET];
-    val_print(VAL_PRINT_ERR, "\n       VERSION        : 0x%08x                 ", *version);
+    version = return_values[VERSION_OFFSET];
+    if (val_compare("Reset Protocol Version", version, RESET_PROTOCOL_VERSION_2))
+        return VAL_STATUS_FAIL;
 
     return VAL_STATUS_PASS;
 }

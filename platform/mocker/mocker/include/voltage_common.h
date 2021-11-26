@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,16 @@
  * limitations under the License.
 **/
 
-#ifndef __PAL_VOLTAGE_EXPECTED_H__
-#define __PAL_VOLTAGE_EXPECTED_H__
+#ifndef VOLTAGE_COMMON_H_
+#define VOLTAGE_COMMON_H_
 
-static uint32_t num_voltage_domains = 0x01;
+#include <protocol_common.h>
 
-static char *voltage_domain_names[] = {
-    "USB",
+/* Structure for voltage protocol version*/
+struct arm_scmi_voltage_protocol_version {
+    struct  {
+        uint32_t version;
+    } returns;
 };
 
-#endif /* __PAL_VOLTAGE_EXPECTED_H__ */
+#endif /* VOLTAGE_COMMON_H_ */

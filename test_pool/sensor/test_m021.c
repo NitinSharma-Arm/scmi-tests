@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,14 @@
 **/
 
 #include "val_interface.h"
-#include "val_base.h"
+#include "val_sensor.h"
 
-#define TEST_NUM  (SCMI_VOLTAGE_TEST_NUM_BASE + 1)
-#define TEST_DESC "Voltage protocol version check                  "
-#define RETURN_VALUE_COUNT 1
+#define TEST_NUM  (SCMI_SENSOR_TEST_NUM_BASE + 21)
+#define TEST_DESC "Sensor read configuration for invalid sensor ID"
 
-uint32_t voltage_query_protocol_version(uint32_t *version)
+#define MAX_PARAMETER_SIZE        1
+
+uint32_t sensor_read_configuration_invalid_id_check(void)
 {
     int32_t  status;
     uint32_t rsp_msg_hdr;
@@ -30,33 +31,27 @@ uint32_t voltage_query_protocol_version(uint32_t *version)
     size_t   param_count;
     size_t   return_value_count;
     uint32_t return_values[MAX_RETURNS_SIZE];
-    uint32_t *parameters;
+    uint32_t parameters[MAX_PARAMETER_SIZE], sensor_id;
 
     if (val_test_initialize(TEST_NUM, TEST_DESC) != VAL_STATUS_PASS)
         return VAL_STATUS_SKIP;
 
-    /* Query the implemented protocol version of voltage protocol */
-    val_print(VAL_PRINT_TEST, "\n     [Check 1] Query protocol version");
+    /* Reading sensor value for invalid sensor should fail */
+    sensor_id = val_sensor_get_info(NUM_SENSORS) + 1;
+    val_print(VAL_PRINT_TEST, "\n     [Check 1] Send invalid sensor id : %d", sensor_id);
 
     VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);
-    parameters = NULL; /* No parameters for this command */
-    cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_PROTOCOL_VERSION, COMMAND_MSG);
+    parameters[param_count++] = sensor_id;
+
+    cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_SENSOR, SENSOR_CONFIG_GET, COMMAND_MSG);
     val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,
                      &return_value_count, return_values);
-
-    if (val_compare_status(status, SCMI_SUCCESS) != VAL_STATUS_PASS)
-        return VAL_STATUS_FAIL;
 
     if (val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
         return VAL_STATUS_FAIL;
 
-    val_print_return_values(return_value_count, return_values);
-
-    if (return_value_count != RETURN_VALUE_COUNT)
+    if (val_compare_status(status, SCMI_NOT_FOUND) != VAL_STATUS_PASS)
         return VAL_STATUS_FAIL;
-
-    *version = return_values[VERSION_OFFSET];
-    val_print(VAL_PRINT_ERR, "\n       VERSION        : 0x%08x                 ", *version);
 
     return VAL_STATUS_PASS;
 }

@@ -114,7 +114,7 @@ uint32_t voltage_query_describe_levels(void)
 
                 step_size = voltage_array[LEVEL_STEP_OFFSET];
                 val_voltage_save_info(VOLTAGE_STEP_SIZE, domain_id, step_size);
-                val_print(VAL_PRINT_DEBUG, "\n       STEP SIZE     : 0x%08X                 ", step_size);
+                val_print(VAL_PRINT_DEBUG, "\n       STEP SIZE      : 0x%08X                 ", step_size);
             }
             /* Save voltage level arrays */
             else

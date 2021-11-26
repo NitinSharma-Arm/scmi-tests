@@ -29,6 +29,15 @@
 #define DESC_OFFSET                         1
 #define SENSOR_VAL_LOW_OFFSET               0
 #define SENSOR_VAL_HIGH_OFFSET              1
+#define NUM_AXIS_FLAG_OFFSET                0
+#define SENSOR_AXIS_DESC_OFFSET             1
+#define UPDATE_INTERVAL_FLAG_OFFSET         0
+#define INTERVAL_START_OFFSET               0
+#define INTERVAL_END_OFFSET                 1
+#define INTERVAL_STEP_OFFSET                2
+#define LEVEL_ARRAY_OFFSET                  1
+#define SENSOR_CONFIG_OFFSET                1
+#define SENSOR_STATE_OFFSET                 0
 
 #define DELAYED_RESP_SENSOR_ID_OFFSET       0
 #define DELAYED_RESP_SENSOR_VAL_LOW_OFFSET  1
@@ -48,10 +57,28 @@
 #define TRIP_POINT_CROSSED_EITHER_DIR       0x3
 #define TRIP_POINT_ID_LOW                   0x4
 
+typedef enum{
+    LEVEL_FORMAT_ARRAY,
+    LEVEL_FORMAT_TRIPLET,
+} SENSOR_UPDATE_INTERVAL_FORMAT;
+
+typedef enum{
+    DISABLED,
+    ENABLED,
+} SENSOR_STATES;
+
 typedef struct {
     uint32_t num_trip_points;
     uint32_t async_read_support;
 } SENSOR_DESC_INFO_s;
+
+typedef struct {
+    uint32_t cont_update_notify_support;
+    uint32_t timestamp_support;
+    uint32_t num_axis;
+    uint32_t axis_support;
+    uint32_t sensor_state;
+} SENSOR_EXTEND_INFO_s;
 
 typedef struct {
     uint32_t num_sensors;
@@ -59,6 +86,7 @@ typedef struct {
     uint8_t  sensor_stats_addr_high;
     uint8_t  sensor_stats_addr_len;
     SENSOR_DESC_INFO_s desc_info[MAX_NUM_OF_SENSORS];
+    SENSOR_EXTEND_INFO_s ext_desc_info[MAX_NUM_OF_SENSORS];
 } SENSOR_INFO_s;
 
 /* Common Tests */
@@ -77,10 +105,25 @@ uint32_t sensor_reading_get_invalid_id_check(void);
 uint32_t sensor_reading_get_sync_mode(void);
 uint32_t sensor_reading_get_async_mode(void);
 uint32_t sensor_reading_get_async_mode_not_supported(void);
+uint32_t sensor_query_description_get_v3(void);
+uint32_t sensor_axis_description_check(void);
+uint32_t sensor_axis_desc_invalid_id_check(void);
+uint32_t sensor_supported_update_intervals_check(void);
+uint32_t sensor_update_interval_invalid_id_check(void);
+uint32_t sensor_read_configuration_check(void);
+uint32_t sensor_read_configuration_invalid_id_check(void);
+uint32_t sensor_set_configuration_check(void);
+uint32_t sensor_set_configuration_invalid_id_check(void);
+uint32_t sensor_request_sensor_notification_check(void);
+uint32_t sensor_request_notification_invalid_id_check(void);
+
+uint32_t sensor_query_description_get_scmi_v3(void);
+
 
 uint32_t val_sensor_get_expected_num_sensors(void);
 uint32_t val_sensor_get_expected_stats_addr_low(void);
 uint32_t val_sensor_get_expected_stats_addr_high(void);
 uint32_t val_sensor_get_expected_stats_addr_len(void);
+uint32_t val_get_notify_enable_config(uint32_t notify_enable_flag);
 
 #endif

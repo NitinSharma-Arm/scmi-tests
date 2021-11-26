@@ -46,6 +46,10 @@ uint32_t val_reset_execute_tests(void)
         RUN_TEST(reset_query_reset_command_invalid_reset_state());
         RUN_TEST(reset_query_notify_invalid_id());
         RUN_TEST(reset_query_invalid_notify_enable());
+
+        if (version == PROTOCOL_VERSION_2) {
+            RUN_TEST(reset_query_domain_attributes_scmi_v3());
+        }
     }
     else
         val_print(VAL_PRINT_ERR, "\n Calling agent have no access to RESET protocol");

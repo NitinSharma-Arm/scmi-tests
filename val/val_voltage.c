@@ -29,8 +29,10 @@ static VOLTAGE_INFO_s g_voltage_info_table;
 **/
 uint32_t val_voltage_execute_tests(void)
 {
+    uint32_t version = 0;
+
     if (val_agent_check_protocol_support(PROTOCOL_VOLTAGE)) {
-        if (RUN_TEST(voltage_query_protocol_version()))
+        if (RUN_TEST(voltage_query_protocol_version(&version)))
             return VAL_STATUS_FAIL;
 
         RUN_TEST(voltage_query_protocol_attributes());

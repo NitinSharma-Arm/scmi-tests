@@ -56,7 +56,7 @@ typedef struct {
 } VOLTAGE_INFO_s;
 
 /* Common Tests */
-uint32_t voltage_query_protocol_version(void);
+uint32_t voltage_query_protocol_version(uint32_t *version);
 uint32_t voltage_query_protocol_attributes(void);
 uint32_t voltage_query_mandatory_command_support(void);
 uint32_t voltage_invalid_messageid_call(void);

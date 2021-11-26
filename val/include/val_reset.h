@@ -59,6 +59,7 @@ uint32_t reset_query_reset_command_invalid_flag(void);
 uint32_t reset_query_reset_command_invalid_reset_state(void);
 uint32_t reset_query_notify_invalid_id(void);
 uint32_t reset_query_invalid_notify_enable(void);
+uint32_t reset_query_domain_attributes_scmi_v3(void);
 
 uint32_t val_reset_get_expected_num_domains(void);
 uint8_t *val_reset_get_expected_name(uint32_t domain_id);

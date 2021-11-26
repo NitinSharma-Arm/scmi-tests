@@ -35,6 +35,12 @@
 #define SCMI_RESET_TEST_NUM_BASE        700
 #define SCMI_VOLTAGE_TEST_NUM_BASE      800
 
+#define VOLTAGE_PROTOCOL_VERSION_1      0x10000
+#define SENSOR_PROTOCOL_VERSION_2       0x20000
+#define RESET_PROTOCOL_VERSION_2        0x20000
+#define POWER_PROTOCOL_VERSION_2_1      0x21000
+
+
 /* set PRINT_LEVEL to one of the below values in your application entry
   to control the verbosity of the prints */
 #define VAL_PRINT_ERR   PAL_PRINT_ERR
@@ -321,7 +327,12 @@ typedef enum {
     SENSOR_TRIP_POINT_NOTIFY,
     SENSOR_TRIP_POINT_CONFIG,
     SENSOR_READING_GET,
-    SENSOR_INVALID_COMMAND
+    SENSOR_AXIS_DESCRIPTION_GET,
+    SENSOR_LIST_UPDATE_INTERVALS,
+    SENSOR_CONFIG_GET,
+    SENSOR_CONFIG_SET,
+    SENSOR_CONTINUOUS_UPDATE_NOTIFY,
+    SENSOR_INVALID_COMMAND,
 } SENSOR_COMMANDS;
 
 typedef enum {
@@ -338,7 +349,12 @@ typedef enum {
     SENSOR_STATS_ADDR_HIGH,
     SENSOR_STATS_ADDR_LEN,
     SENSOR_NUM_OF_TRIP_POINTS,
-    SENSOR_ASYNC_READ_SUPPORT
+    SENSOR_ASYNC_READ_SUPPORT,
+    SENSOR_CONT_NOTIFY_UPDATE_SUPPORT,
+    SENSOR_TIMESTAMP_SUPPORT,
+    SENSOR_NUM_OF_AXIS,
+    SENSOR_AXIS_SUPPORT,
+    SENSOR_STATE,
 } SENSOR_INFO;
 
 void val_sensor_save_info(uint32_t param_identifier, uint32_t param_value);
@@ -347,6 +363,11 @@ void val_sensor_save_desc_info(uint32_t param_identifier, uint32_t sensor_id,
         uint32_t param_value);
 uint32_t val_sensor_get_desc_info(uint32_t param_identifier, uint32_t sensor_id);
 uint32_t val_sensor_execute_tests(void);
+void val_sensor_ext_save_desc_info(uint32_t param_identifier, uint32_t sensor_id,
+        uint32_t param_value);
+uint32_t val_sensor_ext_get_desc_info(uint32_t param_identifier, uint32_t sensor_id);
+uint32_t val_sensor_set_config(uint32_t update_interval, uint32_t update_interval_exp,
+        uint32_t round_up_down, uint32_t timestamp_reporting, uint32_t sensor_state);
 
 /* Reset protocol defines & APIs*/
 

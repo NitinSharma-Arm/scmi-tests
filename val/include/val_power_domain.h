@@ -66,6 +66,8 @@ uint32_t power_domain_power_state_notify_invalid_domain_check(void);
 /* v2 Tests */
 uint32_t power_domain_power_state_change_requested_notify_check(void);
 uint32_t power_domain_power_state_change_requested_notify_invalid_domain_check(void);
+uint32_t power_domain_query_domain_attributes_scmi_v3(void);
+
 
 uint32_t val_power_get_expected_num_domains(void);
 uint32_t val_power_get_expected_stats_addr_low(void);

@@ -54,6 +54,9 @@ uint32_t val_power_domain_execute_tests(void)
             RUN_TEST(power_domain_power_state_change_requested_notify_check());
             RUN_TEST(power_domain_power_state_change_requested_notify_invalid_domain_check());
         }
+        if (version == POWER_PROTOCOL_VERSION_2_1) {
+            RUN_TEST(power_domain_query_domain_attributes_scmi_v3());
+        }
     }
     else
         val_print(VAL_PRINT_ERR, "\n Calling agent have no access to POWER DOMAIN protocol");
