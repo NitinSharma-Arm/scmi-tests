@@ -191,7 +191,7 @@ uint32_t val_voltage_operating_mode_create(uint32_t mode_type, uint32_t mode_id)
 {
     uint32_t config = 0;
 
-    config = config | (mode_type << 2);
+    config = config | (mode_type << 3);
     config = config | mode_id;
 
     return config;

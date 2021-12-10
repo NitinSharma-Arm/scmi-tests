@@ -49,3 +49,34 @@ uint8_t pal_sensor_get_expected_trip_points(uint32_t sensor_id)
 {
     return number_of_trip_points_supported[sensor_id];
 }
+
+
+
+uint8_t pal_sensor_get_sensor_resolutions(uint32_t sensor_id)
+{
+    return sensor_resolutions[sensor_id];
+}
+uint8_t pal_sensor_get_sensor_powers(uint32_t sensor_id)
+{
+    return sensor_powers[sensor_id];
+}
+uint8_t pal_sensor_get_number_of_axis_supported(uint32_t sensor_id)
+{
+    return number_of_axis_supported[sensor_id];
+}
+uint8_t pal_sensor_get_sensor_axis_supported(uint32_t sensor_id)
+{
+    return sensor_axis_supported[sensor_id];
+}
+uint8_t pal_sensor_get_sensor_extended_attributes_support(uint32_t sensor_id)
+{
+    return sensor_extended_attributes_support[sensor_id];
+}
+uint8_t pal_sensor_get_sensor_timestamp_support(uint32_t sensor_id)
+{
+    return sensor_timestamp_support[sensor_id];
+}
+uint8_t pal_sensor_get_continous_sensor_update_notification_support(uint32_t sensor_id)
+{
+    return continous_sensor_update_notification_support[sensor_id];
+}

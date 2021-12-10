@@ -27,8 +27,8 @@
 #define START_LEVEL_INDEX             0
 #define SECOND_LEVEL_INDEX            1
 
-#define MAX_NUM_OF_VOLTAGE_DOMAINS   20
-#define MAX_NUMBER_VOLTAGE_LEVELS    20
+#define MAX_NUM_OF_VOLTAGE_DOMAINS   32
+#define MAX_NUMBER_VOLTAGE_LEVELS    32
 
 typedef enum {
     ARCHITECTURAL_MODE,

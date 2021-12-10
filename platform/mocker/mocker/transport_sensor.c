@@ -20,7 +20,8 @@
 #include <pal_sensor_expected.h>
 
 struct arm_scmi_sensor_protocol sensor_protocol;
-#define SENSOR_DESC_LEN 7
+#define SENSOR_DESC_LEN 13
+#define SENSOR_AXIS_DESC_LEN  12
 
 void fill_sensor_protocol()
 {
@@ -34,8 +35,14 @@ void fill_sensor_protocol()
     sensor_protocol.sensor_reg_address_low + sensor_protocol.sensor_reg_length;
     sensor_protocol.asynchronous_sensor_read_support =
             async_sensor_read_support;
+    sensor_protocol.cont_update_notify_support =
+            continous_sensor_update_notification_support;
+    sensor_protocol.timestamp_support = sensor_timestamp_support;
+    sensor_protocol.extended_attributes_support =
+            sensor_extended_attributes_support;
     sensor_protocol.number_of_trip_points_supported =
             number_of_trip_points_supported;
+    sensor_protocol.axis_supported = sensor_axis_supported;
 }
 
 void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
@@ -43,7 +50,7 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
         size_t *return_values_count, uint32_t *return_values)
 {
 
-    uint32_t parameter_idx, return_idx;
+    uint32_t parameter_idx, return_idx, sensor_id;
     char * str;
     int i;
 
@@ -110,16 +117,49 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
                     sensor_descriptors) + (SENSOR_DESC_LEN * i) + 1] =
                             (sensor_protocol.asynchronous_sensor_read_support[i] <<
                                     SNR_DESC_ATTRLOW_ASYNC_READ_SUPPORT) |
-                                    (sensor_protocol.number_of_trip_points_supported[i] <<
-                                            SNR_DESC_ATTRLOW_NUM_TRIPPOINT_SPRT_LOW);
+                            (sensor_protocol.cont_update_notify_support[i] <<
+                                    SNR_DESC_ATTRLOW_CNT_SNR_UPDATE_NOT) |
+                            (sensor_protocol.timestamp_support[i] <<
+                                    SNR_DESC_ATTRLOW_TIMESTAMP_SUPPORT) |
+                            (sensor_protocol.extended_attributes_support[i] <<
+                                    SNR_DESC_ATTRLOW_EXT_ATTR_SUPPORT) |
+                            (sensor_protocol.number_of_trip_points_supported[i] <<
+                                    SNR_DESC_ATTRLOW_NUM_TRIPPOINT_SPRT_LOW);
             return_values[OFFSET_RET(
                     struct arm_scmi_sensor_description_get,
-                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 2] = 0;
+                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 2] =
+                            (number_of_axis_supported[i] <<
+                                    SNR_DESC_ATTRHIGH_NUM_AXES_LOW) |
+                            (sensor_protocol.axis_supported[i] <<
+                                    SNR_DESC_ATTRHIGH_AXIS_SUPPORT);
+
             str = (char *)
                                                 (&return_values[OFFSET_RET(
                                                         struct arm_scmi_sensor_description_get,
                                                         sensor_descriptors) + (SENSOR_DESC_LEN * i) + 3]);
             sprintf(str, "SENSOR_%d", i);
+
+            return_values[OFFSET_RET(
+                    struct arm_scmi_sensor_description_get,
+                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 7] =
+                            sensor_powers[i];
+            return_values[OFFSET_RET(
+                    struct arm_scmi_sensor_description_get,
+                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 8] =
+                                    sensor_resolutions[i] <<
+                                            SNR_RESOLUTION_SENSOR_RESOL_LOW;
+            return_values[OFFSET_RET(
+                    struct arm_scmi_sensor_description_get,
+                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 9] = 9;
+            return_values[OFFSET_RET(
+                    struct arm_scmi_sensor_description_get,
+                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 10] = 8;
+            return_values[OFFSET_RET(
+                    struct arm_scmi_sensor_description_get,
+                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 11] = 7;
+            return_values[OFFSET_RET(
+                    struct arm_scmi_sensor_description_get,
+                    sensor_descriptors) + (SENSOR_DESC_LEN * i) + 12] = 6;
         }
         *status = SCMI_STATUS_SUCCESS;
         *return_values_count = 1 +
@@ -178,13 +218,13 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
             break;
         }
         if (parameters[OFFSET_PARAM(
-                struct arm_scmi_sensor_reading_get, flags)] > 1)
+                struct arm_scmi_sensor_reading_get, sensor_reading_flags)] > 1)
         {
             *status = SCMI_STATUS_INVALID_PARAMETERS;
             break;
         }
         if( (parameters[OFFSET_PARAM(
-                struct arm_scmi_sensor_reading_get, flags)] == 1) &&
+                struct arm_scmi_sensor_reading_get, sensor_reading_flags)] == 1) &&
                 ((sensor_protocol.asynchronous_sensor_read_support[
                                                                    parameters[OFFSET_PARAM(
                                                                            struct arm_scmi_sensor_reading_get, sensor_id)]]) == 0))
@@ -194,6 +234,67 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
         }
         *status = SCMI_STATUS_SUCCESS;
         *return_values_count = 2;
+        break;
+    case SNSR_AXIS_DESC_GET_MSG_ID:
+        sensor_id = parameters[OFFSET_PARAM(struct arm_scmi_sensor_axis_description_get, sensor_id)];
+        if (sensor_id >= sensor_protocol.number_sensors) {
+            *status = SCMI_STATUS_NOT_FOUND;
+            break;
+        }
+        if (parameters[OFFSET_PARAM(struct arm_scmi_sensor_axis_description_get, axis_desc_index)] >=
+                                            number_of_axis_supported[sensor_id])
+        {
+            *status = SCMI_STATUS_OUT_OF_RANGE;
+            break;
+        }
+        *status = SCMI_STATUS_SUCCESS;
+
+        return_values[OFFSET_RET(struct arm_scmi_sensor_axis_description_get, num_axis_flags)] =
+                      (number_of_axis_supported[sensor_id]) <<
+                        AXIS_NUM_FLAGS_AXIS_DESC_RET_LOW;
+
+        for (i = 0; i < sensor_protocol.number_sensors; ++i) {
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + SENSOR_AXIS_DESC_LEN * i] = i;
+
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 1] =
+                          1 << AXIS_ATTR_LOW_EXT_ATTR_SUPPORT;
+
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 2] =
+                          (2 << AXIS_ATTR_HIGH_EXP_LOW) |
+                          (3 << AXIS_ATTR_HIGH_SENSOR_TYPE_LOW);
+
+          str = (char *)
+                                              (&return_values[OFFSET_RET(
+                                                      struct arm_scmi_sensor_axis_description_get,
+                                                      sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 3]);
+          sprintf(str, "SENSOR_%d_AXIS%d", sensor_id, i);
+
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 7] =
+                                  4 << AXIS_RESOLUTION_LOW;
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 8] = 9;
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 9] = 8;
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 10] = 7;
+          return_values[OFFSET_RET(
+                  struct arm_scmi_sensor_axis_description_get,
+                  sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 11] = 6;
+        }
+        *return_values_count = 1 +
+                (sensor_protocol.number_sensors * SENSOR_AXIS_DESC_LEN);
+        *status = SCMI_STATUS_SUCCESS;
         break;
     default:
         *status = SCMI_STATUS_NOT_FOUND;

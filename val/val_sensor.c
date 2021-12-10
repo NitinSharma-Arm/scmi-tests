@@ -39,7 +39,6 @@ uint32_t val_sensor_execute_tests(void)
         RUN_TEST(sensor_query_protocol_attributes());
         RUN_TEST(sensor_query_mandatory_command_support());
         RUN_TEST(sensor_invalid_messageid_call());
-        RUN_TEST(sensor_query_description_get());
         RUN_TEST(sensor_trip_point_nfy_event_ctrl_check());
         RUN_TEST(sensor_trip_point_nfy_invalid_id_check());
         RUN_TEST(sensor_trip_point_config_invalid_param_check());
@@ -50,6 +49,9 @@ uint32_t val_sensor_execute_tests(void)
         RUN_TEST(sensor_reading_get_sync_mode());
         RUN_TEST(sensor_reading_get_async_mode());
         RUN_TEST(sensor_reading_get_async_mode_not_supported());
+
+        if (version == PROTOCOL_VERSION_1)
+            RUN_TEST(sensor_query_description_get());
 
         if (version == PROTOCOL_VERSION_2) {
             RUN_TEST(sensor_query_description_get_v3());

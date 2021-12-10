@@ -21,7 +21,7 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
-#define SENSOR_VERSION 0x00010000
+#define SENSOR_VERSION 0x00020000
 
 #define SNSR_PROTO_ID                   0x15
 #define SNSR_PROTO_VER_MSG_ID           0x0
@@ -31,6 +31,7 @@
 #define SNSR_TRIP_POINT_NOTIFY_ID       0x4
 #define SNSR_TRIP_POINT_CONFIG_ID       0x5
 #define SNSR_READING_GET_MSG_ID         0x6
+#define SNSR_AXIS_DESC_GET_MSG_ID       0x7
 
 #define MAX_NUMBER_SENSOR   32
 #define SENSOR_ASYNC        1
@@ -44,7 +45,7 @@ struct arm_scmi_sensor_protocol {
      *  flags_mask member.
      */
     enum {
-        SENSOR_PROTOCOL_VERSION = 1,
+        SENSOR_PROTOCOL_VERSION = 2,
         NUMBER_SENSORS,
         MAX_NUM_PENDING_ASYNC_CMDS_SUPPORTED,
         SENSOR_REG_ADDRESS_LOW,
@@ -80,6 +81,17 @@ struct arm_scmi_sensor_protocol {
      * bounded by the number of sensor descriptors.
      */
     uint8_t *asynchronous_sensor_read_support;
+
+    /*
+     * This should have the  continuous update notifications in this platform
+     * bounded by the number of sensor descriptors.
+     */
+    uint8_t *cont_update_notify_support;
+
+    uint8_t *timestamp_support;
+    uint8_t *extended_attributes_support;
+
+    uint8_t *axis_supported;
 
     /*
      * This should have the Number of trip points supported in this platform

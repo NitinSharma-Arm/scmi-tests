@@ -19,9 +19,17 @@
 #define __PAL_SENSOR_EXPECTED_H__
 
 /* Expected SENSOR parameters */
-#define NUM_OF_SENSORS_SUPPORTED        2
-#define SENOR_ASYNC_READ_SUPPORTED      1
-#define SENOR_ASYNC_READ_NOT_SUPPORTED  0
+#define NUM_OF_SENSORS_SUPPORTED            2
+#define SENOR_ASYNC_READ_SUPPORTED          1
+#define SENOR_ASYNC_READ_NOT_SUPPORTED      0
+#define SENSOR_CONT_NOTI_UPD_SUPPORTED      1
+#define SENSOR_CONT_NOTI_UPD_NOT_SUPPORTED  0
+#define SENSOR_TIMESTAMP_SUPPORTED          1
+#define SENSOR_TIMESTAMP_NOT_SUPPORTED      0
+#define SENSOR_EXT_ATTR_SUPPORTED           1
+#define SENSOR_EXT_ATTR_NOT_SUPPORTED       0
+#define SENSOR_AXIS_SUPPORTED               1
+#define SENSOR_AXIS_NOT_SUPPORTED           0
 /*
  * This should have the Asynchronous sensor read support in this platform
  * bounded by the number of sensor descriptors.
@@ -33,13 +41,59 @@ static uint8_t async_sensor_read_support[] =
 };
 
 /*
+ * This should have the  continuous update notifications in this platform
+ * bounded by the number of sensor descriptors.
+ */
+static uint8_t continous_sensor_update_notification_support[] =
+{
+    SENSOR_CONT_NOTI_UPD_NOT_SUPPORTED,
+    SENSOR_CONT_NOTI_UPD_SUPPORTED
+};
+
+static uint8_t sensor_timestamp_support[] =
+{
+    SENSOR_TIMESTAMP_SUPPORTED,
+    SENSOR_TIMESTAMP_NOT_SUPPORTED
+};
+
+static uint8_t sensor_extended_attributes_support[] =
+{
+    SENSOR_EXT_ATTR_SUPPORTED,
+    SENSOR_EXT_ATTR_SUPPORTED
+};
+
+static uint8_t sensor_axis_supported[] =
+{
+    SENSOR_AXIS_SUPPORTED,
+    SENSOR_AXIS_NOT_SUPPORTED
+};
+
+static uint8_t number_of_axis_supported[] =
+{
+    2,
+    3
+};
+
+static uint8_t sensor_powers[] =
+{
+    5,
+    6
+};
+
+static uint8_t sensor_resolutions[] =
+{
+    7,
+    8
+};
+
+/*
  * This should have the Number of trip points supported in this platform
  * bounded by the number of sensor descriptors.
  */
 static uint8_t number_of_trip_points_supported[] =
 {
     0,
-    2
+    0
 };
 
 static uint32_t num_sensors = NUM_OF_SENSORS_SUPPORTED;
