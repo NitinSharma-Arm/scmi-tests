@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,13 +38,13 @@ uint32_t val_performance_execute_tests(void)
 
         RUN_TEST(performance_query_protocol_attributes());
 
-        if (version == PROTOCOL_VERSION_1) {
+        if (version == PERFORMANCE_PROTOCOL_VERSION_1) {
             RUN_TEST(performance_query_mandatory_command_support_v1());
             RUN_TEST(performance_invalid_messageid_call());
             RUN_TEST(performance_query_domain_attributes_v1());
         }
 
-        if (version == PROTOCOL_VERSION_2) {
+        if (version == PERFORMANCE_PROTOCOL_VERSION_2) {
             RUN_TEST(performance_query_mandatory_command_support());
             RUN_TEST(performance_invalid_messageid_call());
             RUN_TEST(performance_query_domain_attributes());
@@ -65,7 +65,7 @@ uint32_t val_performance_execute_tests(void)
         RUN_TEST(performance_query_notify_level_invalid_parameters());
         RUN_TEST(performance_query_notify_level_invalid_domain());
 
-        if (version == PROTOCOL_VERSION_2) {
+        if (version == PERFORMANCE_PROTOCOL_VERSION_2) {
             RUN_TEST(performance_query_describe_fast_channel());
             RUN_TEST(performance_query_describe_fast_channel_invalid_domain());
             RUN_TEST(performance_query_describe_fast_channel_invalid_message());
@@ -75,7 +75,7 @@ uint32_t val_performance_execute_tests(void)
         RUN_TEST(performance_limit_set_async());
         RUN_TEST(performance_level_set_async());
 
-        if (version == PROTOCOL_VERSION_2) {
+        if (version == PERFORMANCE_PROTOCOL_VERSION_2) {
             RUN_TEST(performance_level_get_fast_channel());
             RUN_TEST(performance_limits_get_fast_channel());
         }

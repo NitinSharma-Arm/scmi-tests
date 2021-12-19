@@ -21,11 +21,11 @@
 #define TEST_NUM  (SCMI_SENSOR_TEST_NUM_BASE + 5)
 #define TEST_DESC "Sensor description get check                 "
 
-#define SENSOR_DESC_LEN 19
+#define SENSOR_DESC_LEN 13
 #define START_SENSOR_ID 0
 #define EXTENDED_ATTR_SUPPORTED 1
 
-uint32_t sensor_query_description_get_v3(void)
+uint32_t sensor_query_description_get_scmi_v3(void)
 {
     int32_t  status;
     uint32_t rsp_msg_hdr;
@@ -81,6 +81,8 @@ uint32_t sensor_query_description_get_v3(void)
         sensor_desc = &return_values[DESC_OFFSET];
         for (i = 0; i < num_desc_retured; i++)
         {
+            val_print(VAL_PRINT_TEST, "\n       Sensor description ");
+
             sensor_id = sensor_desc[i * SENSOR_DESC_LEN];
             val_print(VAL_PRINT_DEBUG, "\n       Sensor id              : %d", sensor_id);
 
@@ -190,11 +192,11 @@ uint32_t sensor_query_description_get_v3(void)
         total_sensors += num_desc_retured;
     } while (num_remaining_desc > 0);
 
-    desc_index += num_desc_retured;
-    if (val_compare("NUM OF DESC  ", desc_index, val_sensor_get_expected_num_sensors()))
+    if (val_compare("NUM OF DESC  ", total_sensors, val_sensor_get_expected_num_sensors()))
         return VAL_STATUS_FAIL;
 
     /* Sensor get desc for invalid descriptor index */
+    desc_index = total_sensors + 1;
     val_print(VAL_PRINT_TEST, "\n     [Check 4] Query with invalid desc_index : %d", desc_index);
 
     VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);

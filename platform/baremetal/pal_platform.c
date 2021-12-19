@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -143,8 +143,7 @@ uint32_t pal_initialize_system(void *info)
 #endif
 #ifdef VOLTAGE_PROTOCOL
          case 0x17:
-             // TODO : pal_voltage_set_expected(protocol_info->expected_return_values);
-             // PAL voltage interface for sgm 775 not ready in scp-tools-nonpublic yet.
+             pal_voltage_set_expected(protocol_info->expected_return_values);
              break;
 #endif
          }

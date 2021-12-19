@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,8 @@ uint32_t voltage_set_invalid_voltage_level(void)
     uint32_t parameters[PARAMETER_SIZE];
     uint32_t num_domains, domain_id, flags;
     uint32_t levels_return_format;
-    uint32_t voltage_start, step_size, voltage_second, invalid_voltage;
+    uint32_t voltage_start, step_size, voltage_second;
+    uint32_t invalid_voltage;
 
 
     if (val_test_initialize(TEST_NUM, TEST_DESC) != VAL_STATUS_PASS)
@@ -66,7 +67,7 @@ uint32_t voltage_set_invalid_voltage_level(void)
         /* Set invalid voltage level in command */
         levels_return_format = val_voltage_get_info(VOLTAGE_LEVEL_FORMAT, domain_id);
 
-        if(levels_return_format == LEVEL_FORMAT_TRIPLET)
+        if (levels_return_format == LEVEL_FORMAT_TRIPLET)
         {
             voltage_start = val_voltage_get_info(VOLTAGE_LEVEL_START, domain_id);
             step_size = val_voltage_get_info(VOLTAGE_STEP_SIZE, domain_id);
@@ -84,6 +85,33 @@ uint32_t voltage_set_invalid_voltage_level(void)
 
         val_print(VAL_PRINT_TEST, "\n     Setting voltage values  : 0x%08X", invalid_voltage);
         parameters[param_count++] = invalid_voltage;
+
+        cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_LEVEL_SET, COMMAND_MSG);
+        val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,
+                         &return_value_count, return_values);
+
+        if (val_compare_status(status, SCMI_INVALID_PARAMETERS) != VAL_STATUS_PASS)
+            return VAL_STATUS_FAIL;
+
+        if (val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
+            return VAL_STATUS_FAIL;
+
+        val_print_return_values(return_value_count, return_values);
+
+        /* Set Voltage level for invalid flag */
+        val_print(VAL_PRINT_TEST, "\n    [Check 2] Set Voltage with invalid flag");
+
+        VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);
+
+        /* Set domain ID */
+        parameters[param_count++] = domain_id;
+
+        /* Set flag values for voltage level */
+        flags = 1;
+        parameters[param_count++] = flags;
+
+        val_print(VAL_PRINT_TEST, "\n     Setting voltage values  : 0x%08X", invalid_voltage);
+        parameters[param_count++] = voltage_start;
 
         cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_LEVEL_SET, COMMAND_MSG);
         val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,

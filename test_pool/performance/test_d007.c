@@ -33,7 +33,7 @@ uint32_t performance_query_describe_levels(void)
     size_t   return_value_count;
     uint32_t return_values[MAX_RETURNS_SIZE];
     uint32_t domain_id, num_domains, num_remaining_levels, num_levels_retured;
-    uint32_t i, perf_level, power_cost, latency, level_index;
+    uint32_t i, perf_level, power_cost, latency, level_index, interm_level;
     uint32_t min_perf_level, max_perf_level;
     uint32_t parameters[PARAMETER_SIZE];
     uint32_t *perf_level_array;
@@ -104,10 +104,21 @@ uint32_t performance_query_describe_levels(void)
                 if (max_perf_level < perf_level)
                     max_perf_level = perf_level;
 
-                /* Store a intermediate value*/
-                if (i == 1)
+                /* Store an intermediate value */
+                if (i == 1) {
+                    if (num_levels_retured == 2) {
+                        /*
+                         * When only two levels are available, pick the
+                         * minimum.
+                         */
+                        interm_level = perf_level_array[0];
+                    } else {
+                        interm_level = perf_level;
+                    }
+
                      val_performance_save_info(PERF_DOMAIN_INTERMEDIATE_LEVEL, domain_id,
-                                               perf_level);
+                                               interm_level);
+                }
 
                 power_cost = perf_level_array[1 + (i * PERF_LEVEL_ARRAY_COUNT)];
                 val_print(VAL_PRINT_DEBUG, "\n       PERFORMANCE POWER COST[%d] : %08x",

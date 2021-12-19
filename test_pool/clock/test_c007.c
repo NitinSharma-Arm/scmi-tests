@@ -119,6 +119,11 @@ uint32_t clock_query_describe_rates(void)
                                 clock_id, clock_rate);
                     }
                 } else {
+                    /* Verify remaining rates for triplet format */
+                    val_print(VAL_PRINT_TEST, "\n    [Check 3] Verify triplet return format");
+                    if (num_rates_retured != 3 || num_remaining_rates != 0)
+                        return VAL_STATUS_FAIL;
+
                     /* Find lowest clock rate from rate array */
                     lower_word = rate_array[i * 6];
                     upper_word = rate_array[1 + i * 6];

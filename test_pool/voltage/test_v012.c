@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ uint32_t voltage_set_voltage_level(void)
     uint32_t return_values[MAX_RETURNS_SIZE];
     uint32_t parameters[PARAMETER_SIZE];
     uint32_t num_domains, domain_id;
-    uint32_t level_index=0, flags=0;
+    uint32_t level_index = 0, flags = 0;
     uint32_t *voltage_array, start_voltage, default_voltage, voltage;
 
     if (val_test_initialize(TEST_NUM, TEST_DESC) != VAL_STATUS_PASS)

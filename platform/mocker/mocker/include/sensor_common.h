@@ -181,7 +181,7 @@ struct arm_scmi_sensor_axis_descriptor {
 struct arm_scmi_sensor_list_update_intervals {
     struct {
         uint32_t sensor_id;
-        uint32_t index;
+        uint32_t update_int_index;
     } parameters;
     struct {
         uint32_t update_intervals_flags;

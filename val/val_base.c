@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,15 +41,15 @@ uint32_t val_base_execute_tests(void)
     RUN_TEST(base_query_subvendor_info());
     RUN_TEST(base_query_implementation_version());
     RUN_TEST(base_query_protocol_list());
-    if (version == PROTOCOL_VERSION_1) {
+    if (version == BASE_PROTOCOL_VERSION_1) {
         RUN_TEST(base_discover_agent_v1());
     }
-    if (version == PROTOCOL_VERSION_2) {
+    if (version == BASE_PROTOCOL_VERSION_2) {
         RUN_TEST(base_discover_agent());
     }
     RUN_TEST(base_query_notify_error_support());
 
-    if (version == PROTOCOL_VERSION_2) {
+    if (version == BASE_PROTOCOL_VERSION_2) {
         RUN_TEST(base_set_device_permissions_check());
         RUN_TEST(base_deny_restore_device_access());
         RUN_TEST(base_set_protocol_permissions_check());

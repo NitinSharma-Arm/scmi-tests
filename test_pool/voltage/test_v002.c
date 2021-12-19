@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,13 +44,13 @@ uint32_t voltage_query_protocol_attributes(void)
     parameters = NULL; /* No parameters for this command */
 
     cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_PROTOCOL_ATTRIBUTES, COMMAND_MSG);
-    val_send_message(cmd_msg_hdr, param_count, parameters,&rsp_msg_hdr, &status,
+    val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,
                      &return_value_count, return_values);
 
-    if(val_compare_status(status, SCMI_SUCCESS) != VAL_STATUS_PASS)
+    if (val_compare_status(status, SCMI_SUCCESS) != VAL_STATUS_PASS)
         return VAL_STATUS_FAIL;
 
-    if(val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
+    if (val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
         return VAL_STATUS_FAIL;
 
     val_print_return_values(return_value_count, return_values);
@@ -59,14 +59,14 @@ uint32_t voltage_query_protocol_attributes(void)
     if (val_reserved_bits_check_is_zero(VAL_EXTRACT_BITS(attributes, 16, 31) != VAL_STATUS_PASS))
         return VAL_STATUS_FAIL;
 
-    if(val_compare_return_count(return_value_count, RETURN_VALUE_COUNT))
+    if (val_compare_return_count(return_value_count, RETURN_VALUE_COUNT))
         return VAL_STATUS_FAIL;
 
     /* Save the number of returned voltaged domains. */
     num_domains = VAL_EXTRACT_BITS(attributes, 0, 15);
-    //if (val_compare("NUM DOMAINS", num_domains, val_voltage_get_expected_num_domains()))
-    //    return VAL_STATUS_FAIL;
-    // TODO : How can we get expected num prots in advance from platform.
+
+    if (val_compare("NUM DOMAINS", num_domains, val_voltage_get_expected_num_domains()))
+        return VAL_STATUS_FAIL;
 
     val_voltage_save_info(NUM_VOLTAGE_DOMAINS, 0x0, num_domains);
 

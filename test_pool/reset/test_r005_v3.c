@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +43,7 @@ uint32_t reset_query_domain_attributes_scmi_v3(void)
     }
     val_print(VAL_PRINT_DEBUG, "\n       NUM DOMAINS                    : %d", num_domains);
 
-    /* Verify the sensor IDs are starting from value 0 */
+    /* Verify the reset IDs are starting from value 0 */
     domain_id = 0;
 
     VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);

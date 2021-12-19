@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,7 @@ uint32_t val_power_domain_execute_tests(void)
         RUN_TEST(power_domain_power_state_notify_unspported_domain_check());
         RUN_TEST(power_domain_power_state_notify_invalid_domain_check());
 
-        if (version == PROTOCOL_VERSION_2) {
+        if (version == POWER_PROTOCOL_VERSION_2) {
             RUN_TEST(power_domain_power_state_change_requested_notify_check());
             RUN_TEST(power_domain_power_state_change_requested_notify_invalid_domain_check());
         }

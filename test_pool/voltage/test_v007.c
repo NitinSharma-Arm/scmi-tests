@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,9 +59,10 @@ uint32_t voltage_query_describe_levels(void)
 
         /* Get level of voltage supported by domain until, all voltage level
            details are received */
-        do{
+        do {
             VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);
-            cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_DESCRIBE_LEVELS, COMMAND_MSG);
+            cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_DESCRIBE_LEVELS,
+                                             COMMAND_MSG);
 
             parameters[param_count++] = domain_id;
             level_index += num_remaining_levels;
@@ -100,8 +101,9 @@ uint32_t voltage_query_describe_levels(void)
             /* Verify only 3 values are returned in case level return format is triplet */
             if (levels_return_format == LEVEL_FORMAT_TRIPLET)
             {
-                val_print(VAL_PRINT_TEST, "\n    [Check 2] Verify triplet return format", domain_id);
-                if(num_levels_retured != 3 || num_remaining_levels!= 0)
+                val_print(VAL_PRINT_TEST, "\n    [Check 2] Verify triplet return format",
+                          domain_id);
+                if (num_levels_retured != 3 || num_remaining_levels != 0)
                     return VAL_STATUS_FAIL;
 
                 start_voltage = voltage_array[LEVEL_START_OFFSET];
@@ -114,7 +116,8 @@ uint32_t voltage_query_describe_levels(void)
 
                 step_size = voltage_array[LEVEL_STEP_OFFSET];
                 val_voltage_save_info(VOLTAGE_STEP_SIZE, domain_id, step_size);
-                val_print(VAL_PRINT_DEBUG, "\n       STEP SIZE      : 0x%08X                 ", step_size);
+                val_print(VAL_PRINT_DEBUG, "\n       STEP SIZE     : 0x%08X                 ",
+                          step_size);
             }
             /* Save voltage level arrays */
             else
@@ -126,17 +129,17 @@ uint32_t voltage_query_describe_levels(void)
                   voltage = voltage_array[i];
                   voltage_index++;
                   val_voltage_save_level(domain_id, voltage_index, voltage);
-                  val_print(VAL_PRINT_DEBUG, "\n       Voltage        : %d                    ", voltage);
+                  val_print(VAL_PRINT_DEBUG, "\n       Voltage        : %d                    ",
+                            voltage);
               }
             }
 
-        }while(num_remaining_levels > 0);
+        } while (num_remaining_levels > 0);
 
         /* Check Voltage levels for invalid index values. */
 
-        if (levels_return_format == LEVEL_FORMAT_TRIPLET) {
+        if (levels_return_format == LEVEL_FORMAT_TRIPLET)
             continue; /* Ignore index for triplet return values */
-        }
 
         /* Voltage describe level for invalid level index */
         level_index = level_index + num_levels_retured + 1;

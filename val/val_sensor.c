@@ -50,11 +50,11 @@ uint32_t val_sensor_execute_tests(void)
         RUN_TEST(sensor_reading_get_async_mode());
         RUN_TEST(sensor_reading_get_async_mode_not_supported());
 
-        if (version == PROTOCOL_VERSION_1)
+        if (version == SENSOR_PROTOCOL_VERSION_1)
             RUN_TEST(sensor_query_description_get());
 
-        if (version == PROTOCOL_VERSION_2) {
-            RUN_TEST(sensor_query_description_get_v3());
+        if (version == SENSOR_PROTOCOL_VERSION_2) {
+            RUN_TEST(sensor_query_description_get_scmi_v3());
             RUN_TEST(sensor_axis_description_check());
             RUN_TEST(sensor_axis_desc_invalid_id_check());
             RUN_TEST(sensor_supported_update_intervals_check());
@@ -253,6 +253,7 @@ void val_sensor_ext_save_desc_info(uint32_t param_identifier, uint32_t sensor_id
         break;
     case SENSOR_STATE:
         g_sensor_info_table.ext_desc_info[sensor_id].sensor_state = param_value;
+        break;
     default:
         val_print(VAL_PRINT_ERR, "\nUnidentified parameter %d", param_identifier);
     }

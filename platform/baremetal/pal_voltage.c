@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,7 @@ void pal_voltage_set_expected(const void *info)
 {
     if (info == NULL)
         return;
+
     g_voltage_info = (struct arm_scmi_voltage_expected *)info;
 }
 
@@ -45,9 +46,10 @@ void pal_voltage_set_expected(const void *info)
 **/
 uint32_t pal_voltage_get_expected_num_domains(void)
 {
-    // TODO : return g_voltage_info->number_domains;
-    // PAL voltage interface for sgm 775 not ready in scp-tools-nonpublic yet.
-    return 0;
+    if (g_voltage_info == NULL)
+        return 0;
+
+    return g_voltage_info->number_domains;
 }
 
 /**
@@ -57,9 +59,10 @@ uint32_t pal_voltage_get_expected_num_domains(void)
 **/
 uint8_t *pal_voltage_get_expected_name(uint32_t domain_id)
 {
-    // TODO : return (uint8_t *)g_voltage_info->voltage_domain_name[domain_id];
-    // PAL voltage interface for sgm 775 not ready in scp-tools-nonpublic yet.
-    return NULL;
+    if (g_voltage_info == NULL)
+        return NULL;
+
+    return (uint8_t *)g_voltage_info->voltage_domain_name[domain_id];
 }
 
 #endif

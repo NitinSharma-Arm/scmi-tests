@@ -33,8 +33,8 @@ uint32_t sensor_supported_update_intervals_check(void)
     uint32_t return_values[MAX_RETURNS_SIZE];
     uint32_t parameters[MAX_PARAMETER_SIZE];
     uint32_t sensor_id, num_sensors;
-    uint32_t update_interval_index = 0;
-    uint32_t num_interval_retured = 0, num_remaining_interval;
+    uint32_t update_interval_index;
+    uint32_t num_interval_retured, num_remaining_interval;
     uint32_t interval_flag, interval_format;
     uint32_t start_interval, end_interval, step_size;
     uint32_t *intervals_array, interval, i;
@@ -57,6 +57,7 @@ uint32_t sensor_supported_update_intervals_check(void)
 
         num_remaining_interval = 0;
         num_interval_retured = 0;
+        update_interval_index = 0;
 
         do {
             update_interval_index += num_interval_retured;
@@ -72,7 +73,7 @@ uint32_t sensor_supported_update_intervals_check(void)
             if (val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
                  return VAL_STATUS_FAIL;
 
-            if (val_compare_status(status, SCMI_INVALID_PARAMETERS) != VAL_STATUS_PASS)
+            if (val_compare_status(status, SCMI_SUCCESS) != VAL_STATUS_PASS)
                  return VAL_STATUS_FAIL;
 
             /* Check update intervals flags */

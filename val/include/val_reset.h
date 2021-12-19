@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,6 +59,8 @@ uint32_t reset_query_reset_command_invalid_flag(void);
 uint32_t reset_query_reset_command_invalid_reset_state(void);
 uint32_t reset_query_notify_invalid_id(void);
 uint32_t reset_query_invalid_notify_enable(void);
+
+/* scmi v3 Tests */
 uint32_t reset_query_domain_attributes_scmi_v3(void);
 
 uint32_t val_reset_get_expected_num_domains(void);

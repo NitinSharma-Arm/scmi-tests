@@ -70,7 +70,7 @@ uint32_t performance_level_get_fast_channel(void)
         if (val_performance_get_info(PERF_DOMAIN_FAST_CH_SUPPORT, domain_id) == 0)
             continue;
 
-        val_print(VAL_PRINT_TEST, "\n     FAST CHANNEL supported for DOMAIN: %d",domain_id);
+        val_print(VAL_PRINT_TEST, "\n     FAST CHANNEL supported for DOMAIN: %d", domain_id);
 
         message_id = PERFORMANCE_LEVEL_GET;
         /* if perf level get doesn't support fastchannel, skip */

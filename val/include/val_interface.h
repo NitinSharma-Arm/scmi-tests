@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,19 @@
 #define SCMI_RESET_TEST_NUM_BASE        700
 #define SCMI_VOLTAGE_TEST_NUM_BASE      800
 
-#define VOLTAGE_PROTOCOL_VERSION_1      0x10000
-#define SENSOR_PROTOCOL_VERSION_2       0x20000
-#define RESET_PROTOCOL_VERSION_2        0x20000
-#define POWER_PROTOCOL_VERSION_2_1      0x21000
+#define BASE_PROTOCOL_VERSION_1         0x00010000
+#define BASE_PROTOCOL_VERSION_2         0x00020000
 
+#define PERFORMANCE_PROTOCOL_VERSION_1  0x00010000
+#define PERFORMANCE_PROTOCOL_VERSION_2  0x00020000
+
+#define RESET_PROTOCOL_VERSION_2        0x00020000
+
+#define POWER_PROTOCOL_VERSION_2        0x00020000
+#define POWER_PROTOCOL_VERSION_2_1      0x00021000
+
+#define SENSOR_PROTOCOL_VERSION_1       0x10000
+#define SENSOR_PROTOCOL_VERSION_2       0x20000
 
 /* set PRINT_LEVEL to one of the below values in your application entry
   to control the verbosity of the prints */

@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ uint32_t val_reset_execute_tests(void)
         RUN_TEST(reset_query_notify_invalid_id());
         RUN_TEST(reset_query_invalid_notify_enable());
 
-        if (version == PROTOCOL_VERSION_2) {
+        if (version == RESET_PROTOCOL_VERSION_2) {
             RUN_TEST(reset_query_domain_attributes_scmi_v3());
         }
     }

@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,13 +56,13 @@ uint32_t voltage_query_config_operating_mode(void)
         parameters[param_count++] = domain_id;
 
         cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_VOLTAGE, VOLTAGE_CONFIG_GET, COMMAND_MSG);
-        val_send_message(cmd_msg_hdr, param_count, parameters,&rsp_msg_hdr, &status,
+        val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,
                          &return_value_count, return_values);
 
-        if(val_compare_status(status, SCMI_SUCCESS) != VAL_STATUS_PASS)
+        if (val_compare_status(status, SCMI_SUCCESS) != VAL_STATUS_PASS)
             return VAL_STATUS_FAIL;
 
-        if(val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
+        if (val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
             return VAL_STATUS_FAIL;
 
         val_print_return_values(return_value_count, return_values);
@@ -71,7 +71,7 @@ uint32_t voltage_query_config_operating_mode(void)
         if (val_reserved_bits_check_is_zero(VAL_EXTRACT_BITS(attributes, 4, 31) != VAL_STATUS_PASS))
             return VAL_STATUS_FAIL;
 
-        if(val_compare_return_count(return_value_count, RETURN_VALUE_COUNT))
+        if (val_compare_return_count(return_value_count, RETURN_VALUE_COUNT))
             return VAL_STATUS_FAIL;
 
         /* Get the voltage configuration set for domain ID */
@@ -96,7 +96,7 @@ uint32_t voltage_query_config_operating_mode(void)
     if (val_compare_status(status, SCMI_NOT_FOUND) != VAL_STATUS_PASS)
         return VAL_STATUS_FAIL;
 
-    if(val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
+    if (val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
         return VAL_STATUS_FAIL;
 
     val_print_return_values(return_value_count, return_values);

@@ -50,7 +50,7 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
         size_t *return_values_count, uint32_t *return_values)
 {
 
-    uint32_t parameter_idx, return_idx, sensor_id;
+    uint32_t parameter_idx, return_idx, sensor_id, sensor_cfg;
     char * str;
     int i;
 
@@ -174,8 +174,7 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
             break;
         }
         if (parameters[OFFSET_PARAM(
-                struct arm_scmi_sensor_trip_point_notify, sensor_event_control)] >
-        1)
+                struct arm_scmi_sensor_trip_point_notify, sensor_event_control)] > 1)
         {
             *status = SCMI_STATUS_INVALID_PARAMETERS;
             break;
@@ -253,7 +252,7 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
                       (number_of_axis_supported[sensor_id]) <<
                         AXIS_NUM_FLAGS_AXIS_DESC_RET_LOW;
 
-        for (i = 0; i < sensor_protocol.number_sensors; ++i) {
+        for (i = 0; i < number_of_axis_supported[sensor_id]; ++i) {
           return_values[OFFSET_RET(
                   struct arm_scmi_sensor_axis_description_get,
                   sensor_axis_descriptors) + SENSOR_AXIS_DESC_LEN * i] = i;
@@ -269,10 +268,8 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
                           (2 << AXIS_ATTR_HIGH_EXP_LOW) |
                           (3 << AXIS_ATTR_HIGH_SENSOR_TYPE_LOW);
 
-          str = (char *)
-                                              (&return_values[OFFSET_RET(
-                                                      struct arm_scmi_sensor_axis_description_get,
-                                                      sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 3]);
+          str = (char *)(&return_values[OFFSET_RET(struct arm_scmi_sensor_axis_description_get,
+                          sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 3]);
           sprintf(str, "SENSOR_%d_AXIS%d", sensor_id, i);
 
           return_values[OFFSET_RET(
@@ -293,7 +290,78 @@ void sensor_send_message(uint32_t message_id, uint32_t parameter_count,
                   sensor_axis_descriptors) + (SENSOR_AXIS_DESC_LEN * i) + 11] = 6;
         }
         *return_values_count = 1 +
-                (sensor_protocol.number_sensors * SENSOR_AXIS_DESC_LEN);
+                (number_of_axis_supported[sensor_id] * SENSOR_AXIS_DESC_LEN);
+        *status = SCMI_STATUS_SUCCESS;
+        break;
+    case SNSR_LIST_UPDATE_INTERVALS_MSG_ID:
+        sensor_id = parameters[OFFSET_PARAM(struct arm_scmi_sensor_list_update_intervals, sensor_id)];
+        if (sensor_id >= sensor_protocol.number_sensors) {
+            *status = SCMI_STATUS_NOT_FOUND;
+            break;
+        }
+        int update_int;
+        update_int = parameters[OFFSET_PARAM(struct arm_scmi_sensor_list_update_intervals, update_int_index)];
+        if ( update_int >=
+                                            sensor_update_interval_count[sensor_id])
+        {
+            *status = SCMI_STATUS_OUT_OF_RANGE;
+            break;
+        }
+        return_values[OFFSET_RET(struct arm_scmi_sensor_list_update_intervals, update_intervals_flags)] =
+                                            sensor_update_interval_count[sensor_id] <<
+                                                    UPDT_INT_NUM_RET_INTERVALS_LOW;
+        for (i = 0; i < sensor_update_interval_count[sensor_id] ; i++)
+        {
+          return_values[OFFSET_RET(struct arm_scmi_sensor_list_update_intervals, intervals) + i] =
+                                              (1 << INTERVAL_EXP_LOW) |
+                                              (1 << INTERVAL_SECS_LOW);
+        }
+        *status = SCMI_STATUS_SUCCESS;
+        *return_values_count = 1 + (sensor_update_interval_count[sensor_id]);
+        break;
+    case SNSR_CONFIG_GET_MSG_ID:
+        sensor_id = parameters[OFFSET_PARAM(struct arm_scmi_config_get, sensor_id)];
+        if (sensor_id >= sensor_protocol.number_sensors) {
+            *status = SCMI_STATUS_NOT_FOUND;
+            break;
+        }
+        return_values[OFFSET_RET(struct arm_scmi_config_get, sensor_config)] =
+                                            (sensor_update_intervals[sensor_id] << SNR_CFG_UPDATE_INT_SEC_LOW) |
+                                            (1 << SNR_CFG_UPDATE_INT_EXP_LOW) |
+                                            (RESERVED << SNR_CFG_SET_RESV_LOW) |
+                                            (1 << SNR_CFG_SET_TIMESTAMP_REPORTING) |
+                                            (1 << SNR_CFG_SET_SENSOR_STATE);
+        *status = SCMI_STATUS_SUCCESS;
+        *return_values_count = 1;
+        break;
+    case SNSR_CONFIG_SET_MSG_ID:
+        sensor_id = parameters[OFFSET_PARAM(struct arm_scmi_config_set, sensor_id)];
+        if (sensor_id >= sensor_protocol.number_sensors) {
+            *status = SCMI_STATUS_NOT_FOUND;
+            break;
+        }
+        sensor_cfg = parameters[OFFSET_PARAM(struct arm_scmi_config_set, sensor_config)];
+
+        *status = SCMI_STATUS_SUCCESS;
+        break;
+    case SNSR_CNT_UPDATE_NOTIFY_MSG_ID:
+        sensor_id = parameters[OFFSET_PARAM(struct arm_scmi_cont_update_notify, sensor_id)];
+        if (sensor_id >= sensor_protocol.number_sensors) {
+            *status = SCMI_STATUS_NOT_FOUND;
+            break;
+        }
+        if ( sensor_protocol.cont_update_notify_support[sensor_id] ==
+          SENSOR_CONT_NOTI_UPD_NOT_SUPPORTED )
+        {
+            *status = SCMI_STATUS_NOT_SUPPORTED;
+            break;
+        }
+        sensor_cfg = parameters[OFFSET_PARAM(struct arm_scmi_cont_update_notify, notify_enable)];
+        if ( sensor_cfg >> SNR_NTF_ENB_RESV_LOW )
+        {
+          *status = SCMI_STATUS_INVALID_PARAMETERS;
+          break;
+        }
         *status = SCMI_STATUS_SUCCESS;
         break;
     default:

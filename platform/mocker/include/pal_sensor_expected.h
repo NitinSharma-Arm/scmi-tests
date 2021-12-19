@@ -37,7 +37,7 @@
 static uint8_t async_sensor_read_support[] =
 {
     SENOR_ASYNC_READ_NOT_SUPPORTED,
-    SENOR_ASYNC_READ_NOT_SUPPORTED
+    SENOR_ASYNC_READ_SUPPORTED
 };
 
 /*
@@ -71,7 +71,7 @@ static uint8_t sensor_axis_supported[] =
 static uint8_t number_of_axis_supported[] =
 {
     2,
-    3
+    1
 };
 
 static uint8_t sensor_powers[] =
@@ -86,6 +86,17 @@ static uint8_t sensor_resolutions[] =
     8
 };
 
+static uint8_t sensor_update_interval_count[] =
+{
+    1,
+    2
+};
+
+static uint8_t sensor_update_intervals[] =
+{
+    100,
+    200
+};
 /*
  * This should have the Number of trip points supported in this platform
  * bounded by the number of sensor descriptors.
@@ -93,7 +104,7 @@ static uint8_t sensor_resolutions[] =
 static uint8_t number_of_trip_points_supported[] =
 {
     0,
-    0
+    2
 };
 
 static uint32_t num_sensors = NUM_OF_SENSORS_SUPPORTED;

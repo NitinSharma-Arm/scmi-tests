@@ -56,7 +56,29 @@ uint32_t sensor_request_sensor_notification_check(void)
                                                             sensor_id);
         if (val_compare("Sensor notification support enabled", notification_support, ENABLED)
                         == VAL_STATUS_FAIL)
+        {
+            val_print(VAL_PRINT_TEST, "\n     [Check 2] Notification for unsupported sensor");
+            VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);
+            cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_SENSOR, SENSOR_CONTINUOUS_UPDATE_NOTIFY,
+                                              COMMAND_MSG);
+
+            parameters[param_count++] = sensor_id;
+            notify_enable = val_get_notify_enable_config(ENABLED);
+            parameters[param_count++] = notify_enable;
+
+            val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,
+                             &return_value_count, return_values);
+
+            if (val_compare_status(status, SCMI_NOT_SUPPORTED) != VAL_STATUS_PASS)
+                return VAL_STATUS_FAIL;
+
+            if (val_compare_msg_hdr(cmd_msg_hdr, rsp_msg_hdr) != VAL_STATUS_PASS)
+                return VAL_STATUS_FAIL;
+
+            val_print_return_values(return_value_count, return_values);
+
             continue;
+        }
 
         /* Check sensor state is enabled */
         sensor_state = val_sensor_ext_get_desc_info(SENSOR_STATE, sensor_id);

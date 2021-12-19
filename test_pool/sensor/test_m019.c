@@ -44,6 +44,7 @@ uint32_t sensor_update_interval_invalid_id_check(void)
     VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);
     parameters[param_count++] = sensor_id;
     parameters[param_count++] = update_interval_index;
+
     cmd_msg_hdr = val_msg_hdr_create(PROTOCOL_SENSOR, SENSOR_LIST_UPDATE_INTERVALS, COMMAND_MSG);
     val_send_message(cmd_msg_hdr, param_count, parameters, &rsp_msg_hdr, &status,
                      &return_value_count, return_values);

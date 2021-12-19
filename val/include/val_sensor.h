@@ -105,7 +105,6 @@ uint32_t sensor_reading_get_invalid_id_check(void);
 uint32_t sensor_reading_get_sync_mode(void);
 uint32_t sensor_reading_get_async_mode(void);
 uint32_t sensor_reading_get_async_mode_not_supported(void);
-uint32_t sensor_query_description_get_v3(void);
 uint32_t sensor_axis_description_check(void);
 uint32_t sensor_axis_desc_invalid_id_check(void);
 uint32_t sensor_supported_update_intervals_check(void);
@@ -118,7 +117,6 @@ uint32_t sensor_request_sensor_notification_check(void);
 uint32_t sensor_request_notification_invalid_id_check(void);
 
 uint32_t sensor_query_description_get_scmi_v3(void);
-
 
 uint32_t val_sensor_get_expected_num_sensors(void);
 uint32_t val_sensor_get_expected_stats_addr_low(void);

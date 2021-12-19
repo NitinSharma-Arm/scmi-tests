@@ -88,13 +88,15 @@ uint32_t sensor_set_configuration_check(void)
 
         /* STEP 2: Set a sensor config with modified state. */
         val_print(VAL_PRINT_TEST, "\n    [Step 2] Choose another state for sensor");
-        new_sensor_state = default_sensor_state == DISABLED ? ENABLED : DISABLED;
+        new_sensor_state = (default_sensor_state == DISABLED) ? ENABLED : DISABLED;
 
-        new_sensor_config = val_sensor_set_config(update_interval, update_interval_exp, round_up_down,
-                                            timestamp_reporting, new_sensor_state);
+        new_sensor_config = val_sensor_set_config(update_interval, update_interval_exp,
+                                                  round_up_down, timestamp_reporting,
+                                                  new_sensor_state);
 
         /* STEP 3 : Set new state for sensor */
         val_print(VAL_PRINT_TEST, "\n    [Step 3] Set new sensor state");
+        val_print(VAL_PRINT_DEBUG, "\n       New Sensor State       : %d", new_sensor_state);
         VAL_INIT_TEST_PARAM(param_count, rsp_msg_hdr, return_value_count, status);
         parameters[param_count++] = sensor_id;
         parameters[param_count++] = new_sensor_config;

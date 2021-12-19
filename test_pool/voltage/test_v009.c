@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ uint32_t voltage_set_operating_mode(void)
     int32_t status;
     uint32_t parameters[PARAMETER_SIZE];
     uint32_t return_values[MAX_RETURNS_SIZE];
-    uint32_t domain_id=0;
+    uint32_t domain_id = 0;
 
     if (val_test_initialize(TEST_NUM, TEST_DESC) != VAL_STATUS_PASS)
         return VAL_STATUS_SKIP;

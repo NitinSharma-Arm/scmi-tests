@@ -24,6 +24,7 @@
 #define SENSOR_VERSION 0x00020000
 
 #define SNSR_PROTO_ID                   0x15
+
 #define SNSR_PROTO_VER_MSG_ID           0x0
 #define SNSR_PROTO_ATTRIB_MSG_ID        0x1
 #define SNSR_PROTO_MSG_ATTRIB_MSG_ID    0x2
@@ -32,6 +33,10 @@
 #define SNSR_TRIP_POINT_CONFIG_ID       0x5
 #define SNSR_READING_GET_MSG_ID         0x6
 #define SNSR_AXIS_DESC_GET_MSG_ID       0x7
+#define SNSR_LIST_UPDATE_INTERVALS_MSG_ID     0x8
+#define SNSR_CONFIG_GET_MSG_ID          0x9
+#define SNSR_CONFIG_SET_MSG_ID          0xA
+#define SNSR_CNT_UPDATE_NOTIFY_MSG_ID   0xB
 
 #define MAX_NUMBER_SENSOR   32
 #define SENSOR_ASYNC        1

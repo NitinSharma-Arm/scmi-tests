@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2019-2020, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2021, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,11 +63,12 @@ uint32_t power_domain_power_state_notify_check(void);
 uint32_t power_domain_power_state_notify_unspported_domain_check(void);
 uint32_t power_domain_power_state_notify_invalid_domain_check(void);
 
-/* v2 Tests */
+/* scmi v2 Tests */
 uint32_t power_domain_power_state_change_requested_notify_check(void);
 uint32_t power_domain_power_state_change_requested_notify_invalid_domain_check(void);
-uint32_t power_domain_query_domain_attributes_scmi_v3(void);
 
+/* scmi v3 Tests */
+uint32_t power_domain_query_domain_attributes_scmi_v3(void);
 
 uint32_t val_power_get_expected_num_domains(void);
 uint32_t val_power_get_expected_stats_addr_low(void);
