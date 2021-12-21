@@ -236,8 +236,7 @@ This section outlines the test specification for SCMI Voltage Management Protoco
 | test\_v012 | Set Voltage level of valid voltage domain | Check SUCCESS status is returned | VOLTAGE\_LEVEL\_SET
 | test\_v013 | Set Voltage level of an invalid voltage domain | Check NOT\_FOUND status is returned | VOLTAGE\_LEVEL\_SET
 | test\_v014 | Set Invalid voltage level to voltage domain | Check INVALID\_PARAMETERS status is returned | VOLTAGE\_LEVEL\_SET
-| test\_v015 | Get Voltage level for valid domain | Check SUCCESS is returned | VOLTAGE\_LEVEL\_GET
-| test\_v016 | Get Voltage level for invalid domain | Check NOT\_FOUND is returned | VOLTAGE\_LEVEL\_GET
+| test\_v015 | 1. Get Voltage level for valid domain<br />2.Get Voltage level for invalid domain | 1. Check SUCCESS is returned<br />2.Check NOT\_FOUND is returned | VOLTAGE\_LEVEL\_GET |
 - - - - - - - - - - - - - - - - - - - -
 
 _Copyright (c) 2019-2020, Arm Limited and Contributors. All rights reserved._
