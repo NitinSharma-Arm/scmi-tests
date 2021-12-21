@@ -195,6 +195,8 @@ This section outlines the test specification for SCMI Sensor Management Protocol
 | test_m021  | Read sensor configuration for non-existent sensor. | NOT\_FOUND is returned in response. | SENSOR\_CONFIG\_GET |
 | test_m022  | Set up sensor configuration. | SUCCESS response is returned after applying configurations. | SENSOR\_CONFIG\_SET |
 | test_m023  | Set up configurations for an invalid sensor. | NOT\_FOUND is returned in response. | SENSOR\_CONFIG\_SET |
+| test_m024  | Set up sensor continous update notification request | SUCCESS response is returned after enabling notification. | SENSOR\_CONTINUOUS\_UPDATE\_NOTIFY |
+| test_m023  | Set up continous update notification for invalid sensor. | NOT\_FOUND is returned in response. | SENSOR\_CONTINUOUS\_UPDATE\_NOTIFY |
 
 Reset Management Protocol Tests
 ---------
